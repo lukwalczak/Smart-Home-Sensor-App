@@ -1,17 +1,17 @@
 # 🏠 IoT Smart Home Monitoring
 
-Demonstracyjna aplikacja do monitorowania urządzeń IoT w inteligentnym domu. Aplikacja odczytuje dane z 16 sensorów poprzez MQTT, zapisuje w MongoDB i prezentuje w formie tabelarycznej oraz wykresów.
+A demonstration application for monitoring IoT devices in a smart home. The application reads data from 16 sensors via MQTT, stores it in MongoDB, and presents it in tabular and chart formats.
 
-## 📊 Typy Czujników
+## 📊 Sensor Types
 
-| Typ | Opis | Lokalizacje | Zakres | Jednostka |
-|-----|------|-------------|--------|-----------|
-| **TEMP** | Temperatura | Salon, Sypialnia, Kuchnia, Łazienka | 15-35 | °C |
-| **HUMIDITY** | Wilgotność | Salon, Sypialnia, Kuchnia, Łazienka | 20-80 | % |
-| **CO** | Tlenek węgla | Kuchnia, Garaż, Piwnica, Korytarz | 0-100 | ppm |
-| **AIR_QUALITY** | PM2.5 | Salon, Sypialnia, Kuchnia, Zewnątrz | 0-500 | µg/m³ |
+| Type            | Description     | Locations                               | Range | Unit  |
+| --------------- | --------------- | --------------------------------------- | ----- | ----- |
+| **TEMP**        | Temperature     | Living Room, Bedroom, Kitchen, Bathroom | 15-35 | °C    |
+| **HUMIDITY**    | Humidity        | Living Room, Bedroom, Kitchen, Bathroom | 20-80 | %     |
+| **CO**          | Carbon Monoxide | Kitchen, Garage, Basement, Hallway      | 0-100 | ppm   |
+| **AIR_QUALITY** | PM2.5           | Living Room, Bedroom, Kitchen, Outdoor  | 0-500 | µg/m³ |
 
-## 🛠️ Stack Technologiczny
+## 🛠️ Technology Stack
 
 - **Backend**: ASP.NET Core 8 + SignalR
 - **Frontend**: Vue.js 3 + Vite + Chart.js
@@ -19,42 +19,43 @@ Demonstracyjna aplikacja do monitorowania urządzeń IoT w inteligentnym domu. A
 - **Message Broker**: Eclipse Mosquitto (MQTT)
 - **Containerization**: Docker + docker-compose
 
-## 🚀 Uruchomienie
+## 🚀 Getting Started
 
-### Wymagania
+### Requirements
+
 - Docker Desktop
 
 ### Quick Start
 
 ```bash
-# Klonuj repozytorium
+# Clone the repository
 git clone https://github.com/your-username/SI.NET-Project.git
 cd SI.NET-Project
 
-# Uruchom wszystkie kontenery
+# Start all containers
 docker-compose up -d --build
 
-# Sprawdź status
+# Check status
 docker-compose ps
 ```
 
-### Dostęp do aplikacji
+### Application Access
 
-| Serwis | URL |
-|--------|-----|
-| Frontend | http://localhost:3000 |
+| Service     | URL                       |
+| ----------- | ------------------------- |
+| Frontend    | http://localhost:3000     |
 | Backend API | http://localhost:5000/api |
-| MongoDB | localhost:27017 |
-| MQTT Broker | localhost:1883 |
+| MongoDB     | localhost:27017           |
+| MQTT Broker | localhost:1883            |
 
-## 📁 Struktura Projektu
+## 📁 Project Structure
 
 ```
 SI.NET-Project/
 ├── src/
 │   ├── Backend/           # ASP.NET Core 8 Web API
 │   ├── Frontend/          # Vue.js 3 SPA
-│   └── Simulator/         # .NET Console App (generator danych)
+│   └── Simulator/         # .NET Console App (data generator)
 ├── docker-compose.yml
 ├── LICENSE               # MIT X11
 └── README.md
@@ -62,24 +63,24 @@ SI.NET-Project/
 
 ## 📡 API Endpoints
 
-| Metoda | Endpoint | Opis |
-|--------|----------|------|
-| GET | `/api/sensors` | Lista odczytów z filtrami |
-| GET | `/api/sensors/export/csv` | Eksport do CSV |
-| GET | `/api/sensors/export/json` | Eksport do JSON |
-| GET | `/api/sensors/dashboard` | Dane do dashboardu |
+| Method | Endpoint                   | Description                |
+| ------ | -------------------------- | -------------------------- |
+| GET    | `/api/sensors`             | List readings with filters |
+| GET    | `/api/sensors/export/csv`  | Export to CSV              |
+| GET    | `/api/sensors/export/json` | Export to JSON             |
+| GET    | `/api/sensors/dashboard`   | Dashboard data             |
 
-### Parametry filtrowania
+### Filter Parameters
 
-- `dateFrom` - data początkowa (ISO 8601)
-- `dateTo` - data końcowa (ISO 8601)
-- `sensorType` - typ czujnika (TEMP, HUMIDITY, CO, AIR_QUALITY)
-- `sensorId` - ID instancji czujnika
-- `sortBy` - pole sortowania (timestamp, value)
-- `sortOrder` - kierunek (asc, desc)
-- `page` - numer strony
-- `pageSize` - rozmiar strony
+- `dateFrom` - start date (ISO 8601)
+- `dateTo` - end date (ISO 8601)
+- `sensorType` - sensor type (TEMP, HUMIDITY, CO, AIR_QUALITY)
+- `sensorId` - sensor instance ID
+- `sortBy` - sort field (timestamp, value)
+- `sortOrder` - sort direction (asc, desc)
+- `page` - page number
+- `pageSize` - page size
 
-## 📜 Licencja
+## 📜 License
 
-MIT X11 - szczegóły w pliku [LICENSE](LICENSE)
+MIT X11 - see [LICENSE](LICENSE) file for details
