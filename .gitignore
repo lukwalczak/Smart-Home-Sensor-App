@@ -1,0 +1,22 @@
+# Build artifacts
+bin/
+obj/
+node_modules/
+dist/
+
+# IDE
+.vs/
+.vscode/
+*.user
+*.suo
+
+# Docker volumes (local)
+mosquitto/data/
+mosquitto/log/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
