@@ -18,6 +18,11 @@
             <span>📈</span> Wykresy
           </router-link>
         </li>
+        <li>
+          <router-link to="/blockchain">
+            <span>🔗</span> Blockchain
+          </router-link>
+        </li>
       </ul>
     </aside>
     <main class="main-content">

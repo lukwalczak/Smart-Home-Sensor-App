@@ -5,6 +5,7 @@ using MQTTnet.Client;
 using MQTTnet.Extensions.ManagedClient;
 using Backend.Models;
 using Backend.Hubs;
+using Backend.Blockchain;
 using Microsoft.AspNetCore.SignalR;
 
 namespace Backend.Services;
@@ -14,6 +15,7 @@ public class MqttService : BackgroundService
     private readonly ILogger<MqttService> _logger;
     private readonly MongoDbService _mongoDb;
     private readonly IHubContext<SensorHub> _hubContext;
+    private readonly BlockchainService _blockchainService;
     private readonly string _mqttHost;
     private readonly int _mqttPort;
     private readonly string _topic;
@@ -23,11 +25,13 @@ public class MqttService : BackgroundService
         IConfiguration config,
         ILogger<MqttService> logger,
         MongoDbService mongoDb,
-        IHubContext<SensorHub> hubContext)
+        IHubContext<SensorHub> hubContext,
+        BlockchainService blockchainService)
     {
         _logger = logger;
         _mongoDb = mongoDb;
         _hubContext = hubContext;
+        _blockchainService = blockchainService;
         _mqttHost = config["Mqtt:Host"] ?? "localhost";
         _mqttPort = int.Parse(config["Mqtt:Port"] ?? "1883");
         _topic = config["Mqtt:Topic"] ?? "sensors/#";
@@ -94,6 +98,19 @@ public class MqttService : BackgroundService
             };
 
             await _mongoDb.InsertReadingAsync(reading);
+
+            // Reward sensor with blockchain tokens
+            _ = Task.Run(async () =>
+            {
+                try
+                {
+                    await _blockchainService.RewardSensorAsync(reading.SensorId);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Failed to reward sensor {SensorId} on blockchain", reading.SensorId);
+                }
+            });
 
             // Notify connected clients via SignalR
             await _hubContext.Clients.All.SendAsync("NewReading", new

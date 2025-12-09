@@ -1,0 +1,29 @@
+# Alternative Dockerfile if the main one fails
+FROM node:20-alpine AS node-base
+
+WORKDIR /blockchain
+
+# Copy package files and install dependencies
+COPY package.json ./
+RUN npm install
+
+# Copy source files
+COPY . .
+
+# Use Foundry image and copy node installation
+FROM ghcr.io/foundry-rs/foundry:latest
+
+WORKDIR /blockchain
+
+# Copy Node.js from node image
+COPY --from=node-base /usr/local/bin/node /usr/local/bin/
+COPY --from=node-base /usr/local/lib/node_modules /usr/local/lib/node_modules
+RUN ln -s /usr/local/lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npm
+
+# Copy blockchain files with dependencies
+COPY --from=node-base /blockchain /blockchain
+
+# Make scripts executable
+RUN chmod +x /blockchain/scripts/setup.sh
+
+CMD ["tail", "-f", "/dev/null"]

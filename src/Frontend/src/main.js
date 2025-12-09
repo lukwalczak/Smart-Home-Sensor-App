@@ -4,12 +4,14 @@ import App from './App.vue'
 import Dashboard from './views/Dashboard.vue'
 import DataTable from './views/DataTable.vue'
 import Charts from './views/Charts.vue'
+import Blockchain from './views/Blockchain.vue'
 import './style.css'
 
 const routes = [
     { path: '/', name: 'Dashboard', component: Dashboard },
     { path: '/data', name: 'DataTable', component: DataTable },
-    { path: '/charts', name: 'Charts', component: Charts }
+    { path: '/charts', name: 'Charts', component: Charts },
+    { path: '/blockchain', name: 'Blockchain', component: Blockchain }
 ]
 
 const router = createRouter({
