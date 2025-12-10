@@ -36,7 +36,6 @@
               {{ id }}
             </option>
           </select>
-          <button class="btn btn-primary" @click="fetchData">🔍 Filtruj</button>
           <button
             :class="['btn', autoRefresh ? 'btn-danger' : 'btn-success']"
             @click="toggleAutoRefresh"

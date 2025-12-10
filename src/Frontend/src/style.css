@@ -16,7 +16,8 @@
   --gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
   --gradient-4: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
   --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -4px rgba(0, 0, 0, 0.2);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3),
+    0 4px 6px -4px rgba(0, 0, 0, 0.2);
 }
 
 * {
@@ -26,7 +27,7 @@
 }
 
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
   background: var(--darker);
   color: var(--text);
   min-height: 100vh;
@@ -35,6 +36,7 @@ body {
 #app {
   display: flex;
   min-height: 100vh;
+  width: 100%;
 }
 
 /* Navigation */
@@ -86,6 +88,8 @@ body {
 /* Main Content */
 .main-content {
   flex: 1;
+  width: 100%;
+  min-width: 0;
   padding: 2rem;
   overflow-y: auto;
 }
@@ -141,7 +145,7 @@ body {
 }
 
 .sensor-card::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
@@ -149,10 +153,18 @@ body {
   height: 4px;
 }
 
-.sensor-card.temp::before { background: var(--gradient-2); }
-.sensor-card.humidity::before { background: var(--gradient-3); }
-.sensor-card.co::before { background: var(--gradient-1); }
-.sensor-card.air_quality::before { background: var(--gradient-4); }
+.sensor-card.temp::before {
+  background: var(--gradient-2);
+}
+.sensor-card.humidity::before {
+  background: var(--gradient-3);
+}
+.sensor-card.co::before {
+  background: var(--gradient-1);
+}
+.sensor-card.air_quality::before {
+  background: var(--gradient-4);
+}
 
 .sensor-card:hover {
   transform: translateY(-4px);
@@ -177,10 +189,18 @@ body {
   font-size: 1.5rem;
 }
 
-.sensor-card.temp .sensor-icon { background: rgba(245, 87, 108, 0.2); }
-.sensor-card.humidity .sensor-icon { background: rgba(79, 172, 254, 0.2); }
-.sensor-card.co .sensor-icon { background: rgba(102, 126, 234, 0.2); }
-.sensor-card.air_quality .sensor-icon { background: rgba(67, 233, 123, 0.2); }
+.sensor-card.temp .sensor-icon {
+  background: rgba(245, 87, 108, 0.2);
+}
+.sensor-card.humidity .sensor-icon {
+  background: rgba(79, 172, 254, 0.2);
+}
+.sensor-card.co .sensor-icon {
+  background: rgba(102, 126, 234, 0.2);
+}
+.sensor-card.air_quality .sensor-icon {
+  background: rgba(67, 233, 123, 0.2);
+}
 
 .sensor-location {
   font-size: 0.75rem;
@@ -256,7 +276,8 @@ body {
   flex-wrap: wrap;
 }
 
-.filter-input, .filter-select {
+.filter-input,
+.filter-select {
   background: var(--darker);
   border: 1px solid var(--border);
   color: var(--text);
@@ -266,7 +287,8 @@ body {
   min-width: 150px;
 }
 
-.filter-input:focus, .filter-select:focus {
+.filter-input:focus,
+.filter-select:focus {
   outline: none;
   border-color: var(--primary);
 }
@@ -313,7 +335,8 @@ table {
   border-collapse: collapse;
 }
 
-th, td {
+th,
+td {
   padding: 1rem 1.5rem;
   text-align: left;
   border-bottom: 1px solid var(--border);
@@ -350,10 +373,22 @@ tr:hover td {
   font-weight: 500;
 }
 
-.badge-temp { background: rgba(245, 87, 108, 0.2); color: #f5576c; }
-.badge-humidity { background: rgba(79, 172, 254, 0.2); color: #4facfe; }
-.badge-co { background: rgba(102, 126, 234, 0.2); color: #667eea; }
-.badge-air_quality { background: rgba(67, 233, 123, 0.2); color: #43e97b; }
+.badge-temp {
+  background: rgba(245, 87, 108, 0.2);
+  color: #f5576c;
+}
+.badge-humidity {
+  background: rgba(79, 172, 254, 0.2);
+  color: #4facfe;
+}
+.badge-co {
+  background: rgba(102, 126, 234, 0.2);
+  color: #667eea;
+}
+.badge-air_quality {
+  background: rgba(67, 233, 123, 0.2);
+  color: #43e97b;
+}
 
 .pagination {
   display: flex;
@@ -411,7 +446,8 @@ tr:hover td {
 }
 
 /* Loading & Empty States */
-.loading, .empty-state {
+.loading,
+.empty-state {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -430,7 +466,9 @@ tr:hover td {
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .pulse {
@@ -438,8 +476,13 @@ tr:hover td {
 }
 
 @keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
 }
 
 /* Responsive */
@@ -447,7 +490,7 @@ tr:hover td {
   #app {
     flex-direction: column;
   }
-  
+
   .sidebar {
     width: 100%;
     padding: 1rem;
@@ -455,16 +498,16 @@ tr:hover td {
     align-items: center;
     justify-content: space-between;
   }
-  
+
   .nav-links {
     display: flex;
     gap: 0.5rem;
   }
-  
+
   .nav-links li {
     margin: 0;
   }
-  
+
   .nav-links a {
     padding: 0.5rem 0.75rem;
   }
