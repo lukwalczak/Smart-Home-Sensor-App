@@ -11,6 +11,8 @@ FROM mcr.microsoft.com/dotnet/runtime:8.0
 WORKDIR /app
 COPY --from=build /app .
 
+RUN ls -la sensors-config.json || echo "Warning: sensors-config.json not found"
+
 ENV MQTT_HOST=mosquitto
 ENV MQTT_PORT=1883
 

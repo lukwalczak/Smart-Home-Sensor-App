@@ -1,8 +1,16 @@
 <template>
   <div>
     <header class="page-header">
-      <h1>📊 Dashboard</h1>
-      <p>Monitorowanie sensorów w czasie rzeczywistym</p>
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div>
+          <h1>📊 Dashboard</h1>
+          <p>Monitorowanie sensorów w czasie rzeczywistym</p>
+        </div>
+        <button class="btn btn-primary" @click="fetchDashboard" title="Odśwież dane">
+          <span class="btn-icon">🔄</span>
+          <span>Odśwież</span>
+        </button>
+      </div>
     </header>
 
     <div v-if="loading" class="loading">
@@ -184,6 +192,7 @@ export default {
       getSensorName,
       formatValue,
       formatTime,
+      fetchDashboard,
     }
   },
 }

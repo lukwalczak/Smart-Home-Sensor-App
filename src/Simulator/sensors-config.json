@@ -1,0 +1,182 @@
+{
+  "sensors": [
+    {
+      "sensorType": "TEMP",
+      "sensorId": "TEMP-SERVER-ROOM-1",
+      "location": "Serwerownia 1",
+      "unit": "°C",
+      "enabled": true,
+      "minValue": 18,
+      "maxValue": 24,
+      "volatility": 0.5,
+      "intervalMs": null
+    },
+    {
+      "sensorType": "TEMP",
+      "sensorId": "TEMP-SERVER-ROOM-2",
+      "location": "Serwerownia 2",
+      "unit": "°C",
+      "enabled": true,
+      "minValue": 18,
+      "maxValue": 24,
+      "volatility": 0.4,
+      "intervalMs": null
+    },
+    {
+      "sensorType": "TEMP",
+      "sensorId": "TEMP-SERVER-ROOM-3",
+      "location": "Serwerownia 3",
+      "unit": "°C",
+      "enabled": true,
+      "minValue": 19,
+      "maxValue": 25,
+      "volatility": 0.6,
+      "intervalMs": null
+    },
+    {
+      "sensorType": "TEMP",
+      "sensorId": "TEMP-SERVER-ROOM-4",
+      "location": "Serwerownia 4",
+      "unit": "°C",
+      "enabled": true,
+      "minValue": 18,
+      "maxValue": 23,
+      "volatility": 0.5,
+      "intervalMs": null
+    },
+    {
+      "sensorType": "HUMIDITY",
+      "sensorId": "HUM-COOLING-1",
+      "location": "Chłodzenie 1",
+      "unit": "%",
+      "enabled": true,
+      "minValue": 40,
+      "maxValue": 60,
+      "volatility": 2.0,
+      "intervalMs": null
+    },
+    {
+      "sensorType": "HUMIDITY",
+      "sensorId": "HUM-COOLING-2",
+      "location": "Chłodzenie 2",
+      "unit": "%",
+      "enabled": true,
+      "minValue": 40,
+      "maxValue": 60,
+      "volatility": 1.8,
+      "intervalMs": null
+    },
+    {
+      "sensorType": "HUMIDITY",
+      "sensorId": "HUM-COOLING-3",
+      "location": "Chłodzenie 3",
+      "unit": "%",
+      "enabled": true,
+      "minValue": 42,
+      "maxValue": 62,
+      "volatility": 2.2,
+      "intervalMs": null
+    },
+    {
+      "sensorType": "HUMIDITY",
+      "sensorId": "HUM-COOLING-4",
+      "location": "Chłodzenie 4",
+      "unit": "%",
+      "enabled": true,
+      "minValue": 40,
+      "maxValue": 58,
+      "volatility": 1.9,
+      "intervalMs": null
+    },
+    {
+      "sensorType": "CO2",
+      "sensorId": "CO2-UPS-1",
+      "location": "UPS 1",
+      "unit": "ppm",
+      "enabled": true,
+      "minValue": 400,
+      "maxValue": 1000,
+      "volatility": 50.0,
+      "intervalMs": null
+    },
+    {
+      "sensorType": "CO2",
+      "sensorId": "CO2-UPS-2",
+      "location": "UPS 2",
+      "unit": "ppm",
+      "enabled": true,
+      "minValue": 400,
+      "maxValue": 1000,
+      "volatility": 45.0,
+      "intervalMs": null
+    },
+    {
+      "sensorType": "CO2",
+      "sensorId": "CO2-UPS-3",
+      "location": "UPS 3",
+      "unit": "ppm",
+      "enabled": true,
+      "minValue": 450,
+      "maxValue": 1100,
+      "volatility": 55.0,
+      "intervalMs": null
+    },
+    {
+      "sensorType": "CO2",
+      "sensorId": "CO2-UPS-4",
+      "location": "UPS 4",
+      "unit": "ppm",
+      "enabled": true,
+      "minValue": 400,
+      "maxValue": 950,
+      "volatility": 40.0,
+      "intervalMs": null
+    },
+    {
+      "sensorType": "AIR_QUALITY",
+      "sensorId": "AQ-FILTER-1",
+      "location": "Filtr powietrza 1",
+      "unit": "µg/m³",
+      "enabled": true,
+      "minValue": 5,
+      "maxValue": 30,
+      "volatility": 3.0,
+      "intervalMs": null
+    },
+    {
+      "sensorType": "AIR_QUALITY",
+      "sensorId": "AQ-FILTER-2",
+      "location": "Filtr powietrza 2",
+      "unit": "µg/m³",
+      "enabled": true,
+      "minValue": 5,
+      "maxValue": 25,
+      "volatility": 2.5,
+      "intervalMs": null
+    },
+    {
+      "sensorType": "AIR_QUALITY",
+      "sensorId": "AQ-FILTER-3",
+      "location": "Filtr powietrza 3",
+      "unit": "µg/m³",
+      "enabled": true,
+      "minValue": 8,
+      "maxValue": 35,
+      "volatility": 3.5,
+      "intervalMs": null
+    },
+    {
+      "sensorType": "AIR_QUALITY",
+      "sensorId": "AQ-FILTER-4",
+      "location": "Filtr powietrza 4",
+      "unit": "µg/m³",
+      "enabled": true,
+      "minValue": 5,
+      "maxValue": 28,
+      "volatility": 2.8,
+      "intervalMs": null
+    }
+  ],
+  "singleSensor": "TEMP-SERVER-ROOM-1"
+}
+

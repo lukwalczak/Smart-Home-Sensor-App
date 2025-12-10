@@ -5,33 +5,37 @@
       <p>Wizualizacja danych sensorów</p>
     </header>
 
-    <div class="chart-container">
-      <div class="table-header">
-        <div class="filters">
-          <select
-            v-model="selectedSensor"
-            class="filter-select"
-            @change="fetchChartData"
-          >
-            <option value="">Wybierz sensor</option>
-            <option v-for="id in sensorIds" :key="id" :value="id">
-              {{ id }}
-            </option>
-          </select>
-          <input
-            type="date"
-            v-model="dateFrom"
-            class="filter-input"
-            @change="fetchChartData"
-          />
-          <input
-            type="date"
-            v-model="dateTo"
-            class="filter-input"
-            @change="fetchChartData"
-          />
+      <div class="chart-container">
+        <div class="table-header">
+          <div class="filters">
+            <select
+              v-model="selectedSensor"
+              class="filter-select"
+              @change="fetchChartData"
+            >
+              <option value="">Wybierz sensor</option>
+              <option v-for="id in sensorIds" :key="id" :value="id">
+                {{ id }}
+              </option>
+            </select>
+            <input
+              type="date"
+              v-model="dateFrom"
+              class="filter-input"
+              @change="fetchChartData"
+            />
+            <input
+              type="date"
+              v-model="dateTo"
+              class="filter-input"
+              @change="fetchChartData"
+            />
+            <button class="btn btn-primary" @click="fetchChartData" title="Odśwież wykres">
+              <span class="btn-icon">🔄</span>
+              <span>Odśwież</span>
+            </button>
+          </div>
         </div>
-      </div>
 
       <div v-if="loading" class="loading">
         <div class="spinner"></div>
@@ -345,4 +349,5 @@ export default {
 .charts-page :deep(canvas) {
   width: 100% !important;
 }
+
 </style>

@@ -11,4 +11,10 @@
     <PackageReference Include="MQTTnet" Version="4.3.3.952" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Include="sensors-config.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>

@@ -1,11 +1,20 @@
 <template>
   <div>
     <header class="page-header">
-      <h1>📋 Dane sensorów</h1>
-      <p>Przeglądaj, filtruj i eksportuj dane</p>
+      <div class="header-content">
+        <div>
+          <h1>📋 Dane sensorów</h1>
+          <p>Przeglądaj, filtruj i eksportuj dane</p>
+        </div>
+        <div v-if="autoRefresh" class="auto-refresh-status-inline">
+          <span class="refresh-icon">🔄</span>
+          <span>Auto-odświeżanie aktywne</span>
+        </div>
+      </div>
     </header>
 
     <div class="data-table-wrapper">
+      
       <div class="table-header">
         <div class="filters">
           <input
@@ -23,14 +32,18 @@
           <select
             v-model="filters.sensorType"
             class="filter-select"
-            @change="fetchSensorIds"
+            @change="onSensorTypeChange"
           >
             <option value="">Wszystkie typy</option>
             <option v-for="type in sensorTypes" :key="type" :value="type">
               {{ getSensorName(type) }}
             </option>
           </select>
-          <select v-model="filters.sensorId" class="filter-select">
+          <select 
+            v-model="filters.sensorId" 
+            class="filter-select"
+            :disabled="!filters.sensorType && sensorIds.length === 0"
+          >
             <option value="">Wszystkie sensory</option>
             <option v-for="id in sensorIds" :key="id" :value="id">
               {{ id }}
@@ -39,13 +52,21 @@
           <button
             :class="['btn', autoRefresh ? 'btn-danger' : 'btn-success']"
             @click="toggleAutoRefresh"
+            :title="autoRefresh ? 'Kliknij, aby zatrzymać auto-odświeżanie' : 'Kliknij, aby włączyć auto-odświeżanie'"
           >
-            {{ autoRefresh ? "⏸️ Pauza" : "▶️ Auto" }}
+            <span class="btn-icon">{{ autoRefresh ? "⏸️" : "▶️" }}</span>
+            <span>{{ autoRefresh ? "Pauza" : "Włącz Auto" }}</span>
           </button>
         </div>
         <div class="export-buttons">
-          <button class="btn btn-secondary" @click="exportCsv">📄 CSV</button>
-          <button class="btn btn-secondary" @click="exportJson">📋 JSON</button>
+          <button class="btn btn-secondary" @click="exportCsv">
+            <span class="btn-icon">📄</span>
+            <span>CSV</span>
+          </button>
+          <button class="btn btn-secondary" @click="exportJson">
+            <span class="btn-icon">📋</span>
+            <span>JSON</span>
+          </button>
         </div>
       </div>
 
@@ -213,15 +234,25 @@ export default {
 
     const startAutoRefresh = () => {
       if (refreshInterval) clearInterval(refreshInterval)
-      refreshInterval = setInterval(() => {
-        if (autoRefresh.value) {
-          fetchDataSilent()
-        }
-      }, 1000)
+      if (autoRefresh.value) {
+        refreshInterval = setInterval(() => {
+          if (autoRefresh.value) {
+            fetchDataSilent()
+          }
+        }, 1000)
+      }
     }
 
     const toggleAutoRefresh = () => {
       autoRefresh.value = !autoRefresh.value
+      if (autoRefresh.value) {
+        startAutoRefresh()
+      } else {
+        if (refreshInterval) {
+          clearInterval(refreshInterval)
+          refreshInterval = null
+        }
+      }
     }
 
     const fetchSensorTypes = async () => {
@@ -240,6 +271,10 @@ export default {
           : `${API_URL}/api/sensors/ids`
         const response = await axios.get(url)
         sensorIds.value = response.data
+        // Reset sensorId if it's no longer in the list
+        if (filters.sensorId && !sensorIds.value.includes(filters.sensorId)) {
+          filters.sensorId = ""
+        }
       } catch (error) {
         console.error("Error fetching IDs:", error)
       }
@@ -270,6 +305,14 @@ export default {
       window.open(`${API_URL}/api/sensors/export/json?${params}`, "_blank")
     }
 
+    const onSensorTypeChange = async () => {
+      await fetchSensorIds()
+      if (filters.sensorId && !sensorIds.value.includes(filters.sensorId)) {
+        filters.sensorId = ""
+      }
+      fetchData()
+    }
+
     const getSensorName = (type) => {
       const names = {
         TEMP: "Temperatura",
@@ -288,7 +331,9 @@ export default {
       await fetchSensorTypes()
       await fetchSensorIds()
       await fetchData()
-      startAutoRefresh()
+      if (autoRefresh.value) {
+        startAutoRefresh()
+      }
     })
 
     onUnmounted(() => {
@@ -309,6 +354,7 @@ export default {
       autoRefresh,
       fetchData,
       fetchSensorIds,
+      onSensorTypeChange,
       sortBy,
       goToPage,
       exportCsv,
@@ -322,33 +368,71 @@ export default {
 </script>
 
 <style scoped>
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+}
+
+.auto-refresh-status-inline {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1.25rem;
+  background: linear-gradient(135deg, rgba(34, 197, 94, 0.25) 0%, rgba(16, 185, 129, 0.25) 100%);
+  border: 2px solid rgba(34, 197, 94, 0.5);
+  border-radius: 0.75rem;
+  color: #22c55e;
+  font-size: 0.875rem;
+  font-weight: 600;
+  box-shadow: 0 6px 16px rgba(34, 197, 94, 0.4);
+  white-space: nowrap;
+}
+
+.data-table-wrapper {
+  position: relative;
+}
+
+.refresh-icon {
+  animation: spin 2s linear infinite;
+  display: inline-block;
+  font-size: 1rem;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.btn-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  line-height: 1;
+}
+
 .btn-success {
-  background: #22c55e;
+  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
   color: white;
 }
 .btn-success:hover {
-  background: #16a34a;
+  background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4);
 }
 .btn-danger {
-  background: #ef4444;
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
   color: white;
 }
 .btn-danger:hover {
-  background: #dc2626;
-}
-.auto-refresh-indicator {
-  color: #22c55e;
-  font-size: 0.875rem;
-  margin-right: 1rem;
-  animation: pulse 2s infinite;
-}
-@keyframes pulse {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.5;
-  }
+  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
 }
 </style>
