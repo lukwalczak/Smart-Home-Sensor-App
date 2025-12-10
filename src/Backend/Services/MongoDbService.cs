@@ -13,7 +13,7 @@ public class MongoDbService
     {
         _logger = logger;
         var connectionString = config["MongoDB:ConnectionString"] ?? "mongodb://localhost:27017";
-        var databaseName = config["MongoDB:DatabaseName"] ?? "SmartHome";
+        var databaseName = config["MongoDB:DatabaseName"] ?? "DataCenter";
 
         var client = new MongoClient(connectionString);
         var database = client.GetDatabase(databaseName);
@@ -130,13 +130,13 @@ public class MongoDbService
                 { "unit", 1 },
                 { "lastValue", 1 },
                 { "lastTimestamp", 1 },
-                { "averageValue", new BsonDocument("$avg", 
+                { "averageValue", new BsonDocument("$avg",
                     new BsonDocument("$slice", new BsonArray { "$recentValues", 100 })) }
             })
         };
 
         var results = await _readings.Aggregate<BsonDocument>(pipeline).ToListAsync();
-        
+
         return results.Select(doc => new DashboardSensor
         {
             SensorId = doc["sensorId"].AsString,
@@ -159,7 +159,7 @@ public class MongoDbService
         var filter = string.IsNullOrEmpty(sensorType)
             ? Builders<SensorReading>.Filter.Empty
             : Builders<SensorReading>.Filter.Eq(r => r.SensorType, sensorType);
-        
+
         return await _readings.Distinct<string>("sensorId", filter).ToListAsync();
     }
 }

@@ -1,6 +1,6 @@
-# Quick start script for Smart Home Sensor App with Blockchain
+# Quick start script for Data Center Sensor App with Blockchain
 
-Write-Host "[*] Starting Smart Home Sensor App with Blockchain..." -ForegroundColor Cyan
+Write-Host "[*] Starting Data Center Sensor App with Blockchain..." -ForegroundColor Cyan
 Write-Host ""
 
 # Step 1: Start containers

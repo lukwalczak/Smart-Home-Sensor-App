@@ -19,15 +19,21 @@
         </div>
         <div class="info-card">
           <div class="info-label">Całkowita podaż</div>
-          <div class="info-value">{{ formatNumber(contractInfo.totalSupply) }} SRT</div>
+          <div class="info-value">
+            {{ formatNumber(contractInfo.totalSupply) }} SRT
+          </div>
         </div>
         <div class="info-card">
           <div class="info-label">Nagroda za wiadomość</div>
-          <div class="info-value">{{ formatNumber(contractInfo.rewardPerMessage) }} SRT</div>
+          <div class="info-value">
+            {{ formatNumber(contractInfo.rewardPerMessage) }} SRT
+          </div>
         </div>
         <div class="info-card">
           <div class="info-label">Saldo administratora</div>
-          <div class="info-value">{{ formatNumber(contractInfo.adminBalance) }} SRT</div>
+          <div class="info-value">
+            {{ formatNumber(contractInfo.adminBalance) }} SRT
+          </div>
         </div>
       </div>
     </div>
@@ -65,10 +71,15 @@
         </thead>
         <tbody>
           <tr v-for="sensor in sortedSensors" :key="sensor.sensorId">
-            <td><strong>{{ sensor.sensorId }}</strong></td>
             <td>
-              <span :class="['type-badge', getSensorTypeClass(sensor.sensorId)]">
-                {{ getIcon(sensor.sensorId) }} {{ getSensorType(sensor.sensorId) }}
+              <strong>{{ sensor.sensorId }}</strong>
+            </td>
+            <td>
+              <span
+                :class="['type-badge', getSensorTypeClass(sensor.sensorId)]"
+              >
+                {{ getIcon(sensor.sensorId) }}
+                {{ getSensorType(sensor.sensorId) }}
               </span>
             </td>
             <td>{{ getLocation(sensor.sensorId) }}</td>
@@ -100,110 +111,160 @@
 </template>
 
 <script>
-import { ref, computed, onMounted } from "vue";
-import axios from "axios";
+import { ref, computed, onMounted } from "vue"
+import axios from "axios"
 
 export default {
   name: "Blockchain",
   setup() {
-    const sensors = ref([]);
-    const contractInfo = ref(null);
-    const loading = ref(true);
+    const sensors = ref([])
+    const contractInfo = ref(null)
+    const loading = ref(true)
 
-    const API_URL = import.meta.env.PROD ? "" : "http://localhost:5000";
+    const API_URL = import.meta.env.PROD ? "" : "http://localhost:5000"
 
     const sensorMetadata = {
-      "TEMP-SALON": { type: "Temperatura", location: "Salon", icon: "🌡️" },
-      "TEMP-SYPIALNIA": { type: "Temperatura", location: "Sypialnia", icon: "🌡️" },
-      "TEMP-KUCHNIA": { type: "Temperatura", location: "Kuchnia", icon: "🌡️" },
-      "TEMP-LAZIENKA": { type: "Temperatura", location: "Łazienka", icon: "🌡️" },
-      "HUM-SALON": { type: "Wilgotność", location: "Salon", icon: "💧" },
-      "HUM-SYPIALNIA": { type: "Wilgotność", location: "Sypialnia", icon: "💧" },
-      "HUM-KUCHNIA": { type: "Wilgotność", location: "Kuchnia", icon: "💧" },
-      "HUM-LAZIENKA": { type: "Wilgotność", location: "Łazienka", icon: "💧" },
-      "CO-KUCHNIA": { type: "CO", location: "Kuchnia", icon: "☁️" },
-      "CO-GARAZ": { type: "CO", location: "Garaż", icon: "☁️" },
-      "CO-PIWNICA": { type: "CO", location: "Piwnica", icon: "☁️" },
-      "CO-KORYTARZ": { type: "CO", location: "Korytarz", icon: "☁️" },
-      "AQ-SALON": { type: "Jakość powietrza", location: "Salon", icon: "🌿" },
-      "AQ-SYPIALNIA": { type: "Jakość powietrza", location: "Sypialnia", icon: "🌿" },
-      "AQ-KUCHNIA": { type: "Jakość powietrza", location: "Kuchnia", icon: "🌿" },
-      "AQ-ZEWNATRZ": { type: "Jakość powietrza", location: "Zewnątrz", icon: "🌿" },
-    };
+      "TEMP-SERVER-ROOM-1": {
+        type: "Temperatura",
+        location: "Serwerownia 1",
+        icon: "🌡️",
+      },
+      "TEMP-SERVER-ROOM-2": {
+        type: "Temperatura",
+        location: "Serwerownia 2",
+        icon: "🌡️",
+      },
+      "TEMP-SERVER-ROOM-3": {
+        type: "Temperatura",
+        location: "Serwerownia 3",
+        icon: "🌡️",
+      },
+      "TEMP-SERVER-ROOM-4": {
+        type: "Temperatura",
+        location: "Serwerownia 4",
+        icon: "🌡️",
+      },
+      "HUM-COOLING-1": {
+        type: "Wilgotność",
+        location: "Chłodzenie 1",
+        icon: "💧",
+      },
+      "HUM-COOLING-2": {
+        type: "Wilgotność",
+        location: "Chłodzenie 2",
+        icon: "💧",
+      },
+      "HUM-COOLING-3": {
+        type: "Wilgotność",
+        location: "Chłodzenie 3",
+        icon: "💧",
+      },
+      "HUM-COOLING-4": {
+        type: "Wilgotność",
+        location: "Chłodzenie 4",
+        icon: "💧",
+      },
+      "CO2-UPS-1": { type: "CO₂", location: "UPS 1", icon: "☁️" },
+      "CO2-UPS-2": { type: "CO₂", location: "UPS 2", icon: "☁️" },
+      "CO2-UPS-3": { type: "CO₂", location: "UPS 3", icon: "☁️" },
+      "CO2-UPS-4": { type: "CO₂", location: "UPS 4", icon: "☁️" },
+      "AQ-FILTER-1": {
+        type: "Jakość powietrza",
+        location: "Filtr powietrza 1",
+        icon: "🌿",
+      },
+      "AQ-FILTER-2": {
+        type: "Jakość powietrza",
+        location: "Filtr powietrza 2",
+        icon: "🌿",
+      },
+      "AQ-FILTER-3": {
+        type: "Jakość powietrza",
+        location: "Filtr powietrza 3",
+        icon: "🌿",
+      },
+      "AQ-FILTER-4": {
+        type: "Jakość powietrza",
+        location: "Filtr powietrza 4",
+        icon: "🌿",
+      },
+    }
 
     const sortedSensors = computed(() => {
       return [...sensors.value].sort((a, b) => {
-        return b.totalRewards - a.totalRewards;
-      });
-    });
+        return b.totalRewards - a.totalRewards
+      })
+    })
 
     const totalRewards = computed(() => {
-      return sensors.value.reduce((sum, s) => sum + s.totalRewards, 0);
-    });
+      return sensors.value.reduce((sum, s) => sum + s.totalRewards, 0)
+    })
 
     const totalMessages = computed(() => {
-      return sensors.value.reduce((sum, s) => sum + s.messageCount, 0);
-    });
+      return sensors.value.reduce((sum, s) => sum + s.messageCount, 0)
+    })
 
     const averageReward = computed(() => {
       return sensors.value.length > 0
         ? totalRewards.value / sensors.value.length
-        : 0;
-    });
+        : 0
+    })
 
     const fetchData = async () => {
-      loading.value = true;
+      loading.value = true
       try {
         const [sensorsRes, contractRes] = await Promise.all([
           axios.get(`${API_URL}/api/blockchain/sensors`),
           axios.get(`${API_URL}/api/blockchain/contract`),
-        ]);
+        ])
 
-        sensors.value = sensorsRes.data;
-        contractInfo.value = contractRes.data;
+        sensors.value = sensorsRes.data
+        contractInfo.value = contractRes.data
       } catch (error) {
-        console.error("Error fetching blockchain data:", error);
+        console.error("Error fetching blockchain data:", error)
       } finally {
-        loading.value = false;
+        loading.value = false
       }
-    };
+    }
 
     const getSensorType = (sensorId) => {
-      return sensorMetadata[sensorId]?.type || "Unknown";
-    };
+      return sensorMetadata[sensorId]?.type || "Unknown"
+    }
 
     const getLocation = (sensorId) => {
-      return sensorMetadata[sensorId]?.location || "Unknown";
-    };
+      return sensorMetadata[sensorId]?.location || "Unknown"
+    }
 
     const getIcon = (sensorId) => {
-      return sensorMetadata[sensorId]?.icon || "📡";
-    };
+      return sensorMetadata[sensorId]?.icon || "📡"
+    }
 
     const getSensorTypeClass = (sensorId) => {
-      if (sensorId.startsWith("TEMP")) return "temp";
-      if (sensorId.startsWith("HUM")) return "humidity";
-      if (sensorId.startsWith("CO")) return "co";
-      if (sensorId.startsWith("AQ")) return "air-quality";
-      return "";
-    };
+      if (sensorId.startsWith("TEMP")) return "temp"
+      if (sensorId.startsWith("HUM")) return "humidity"
+      if (sensorId.startsWith("CO")) return "co"
+      if (sensorId.startsWith("AQ")) return "air-quality"
+      return ""
+    }
 
     const formatAddress = (address) => {
-      return `${address.substring(0, 6)}...${address.substring(address.length - 4)}`;
-    };
+      return `${address.substring(0, 6)}...${address.substring(
+        address.length - 4
+      )}`
+    }
 
     const formatNumber = (num) => {
       return Number(num).toLocaleString("pl-PL", {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2,
-      });
-    };
+      })
+    }
 
     onMounted(() => {
-      fetchData();
+      fetchData()
       // Auto refresh every 30 seconds
-      setInterval(fetchData, 30000);
-    });
+      setInterval(fetchData, 30000)
+    })
 
     return {
       sensors,
@@ -220,9 +281,9 @@ export default {
       getSensorTypeClass,
       formatAddress,
       formatNumber,
-    };
+    }
   },
-};
+}
 </script>
 
 <style scoped>
@@ -305,6 +366,7 @@ td {
   padding: 12px;
   text-align: left;
   border-bottom: 1px solid #ecf0f1;
+  color: #2c3e50;
 }
 
 th {
@@ -314,6 +376,15 @@ th {
   font-size: 0.9em;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  cursor: default;
+}
+
+th:hover {
+  color: #2c3e50;
+}
+
+td {
+  color: #2c3e50;
 }
 
 tr:hover {
@@ -338,7 +409,7 @@ tr:hover {
   color: #1976d2;
 }
 
-.type-badge.co {
+.type-badge.co2 {
   background: #fff3e0;
   color: #e65100;
 }

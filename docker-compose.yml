@@ -8,7 +8,10 @@ services:
     environment:
       - ANVIL_IP_ADDR=0.0.0.0
     entrypoint: ["/bin/sh", "-c"]
-    command: ["anvil --host 0.0.0.0 --chain-id 31337 --block-time 1 --gas-limit 100000000"]
+    command:
+      [
+        "anvil --host 0.0.0.0 --chain-id 31337 --block-time 1 --gas-limit 100000000",
+      ]
     restart: unless-stopped
 
   # Blockchain - Contract deployment
@@ -62,7 +65,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - MongoDB__ConnectionString=mongodb://mongodb:27017
-      - MongoDB__DatabaseName=SmartHome
+      - MongoDB__DatabaseName=DataCenter
       - Mqtt__Host=mosquitto
       - Mqtt__Port=1883
       - Mqtt__Topic=sensors/#

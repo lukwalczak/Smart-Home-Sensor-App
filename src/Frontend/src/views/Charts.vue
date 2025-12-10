@@ -110,7 +110,7 @@ export default {
     const colors = {
       TEMP: { border: "#f5576c", background: "rgba(245, 87, 108, 0.1)" },
       HUMIDITY: { border: "#4facfe", background: "rgba(79, 172, 254, 0.1)" },
-      CO: { border: "#667eea", background: "rgba(102, 126, 234, 0.1)" },
+      CO2: { border: "#667eea", background: "rgba(102, 126, 234, 0.1)" },
       AIR_QUALITY: { border: "#43e97b", background: "rgba(67, 233, 123, 0.1)" },
     }
 
@@ -254,7 +254,7 @@ export default {
       const icons = {
         TEMP: "🌡️",
         HUMIDITY: "💧",
-        CO: "☁️",
+        CO2: "☁️",
         AIR_QUALITY: "🌿",
       }
       return icons[type] || "📡"
@@ -264,7 +264,7 @@ export default {
       const names = {
         TEMP: "Temperatura",
         HUMIDITY: "Wilgotność",
-        CO: "Tlenek węgla",
+        CO2: "Dwutlenek węgla",
         AIR_QUALITY: "Jakość powietrza PM2.5",
       }
       return names[type] || type

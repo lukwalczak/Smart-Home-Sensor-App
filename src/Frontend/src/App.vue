@@ -1,22 +1,16 @@
 <template>
   <div id="app">
     <aside class="sidebar">
-      <div class="logo">🏠 Smart Home</div>
+      <div class="logo">🖥️ Data Center</div>
       <ul class="nav-links">
         <li>
-          <router-link to="/">
-            <span>📊</span> Dashboard
-          </router-link>
+          <router-link to="/"> <span>📊</span> Dashboard </router-link>
         </li>
         <li>
-          <router-link to="/data">
-            <span>📋</span> Dane
-          </router-link>
+          <router-link to="/data"> <span>📋</span> Dane </router-link>
         </li>
         <li>
-          <router-link to="/charts">
-            <span>📈</span> Wykresy
-          </router-link>
+          <router-link to="/charts"> <span>📈</span> Wykresy </router-link>
         </li>
         <li>
           <router-link to="/blockchain">
@@ -33,6 +27,6 @@
 
 <script>
 export default {
-  name: 'App'
+  name: "App",
 }
 </script>

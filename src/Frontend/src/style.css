@@ -159,7 +159,7 @@ body {
 .sensor-card.humidity::before {
   background: var(--gradient-3);
 }
-.sensor-card.co::before {
+.sensor-card.co2::before {
   background: var(--gradient-1);
 }
 .sensor-card.air_quality::before {
@@ -195,7 +195,7 @@ body {
 .sensor-card.humidity .sensor-icon {
   background: rgba(79, 172, 254, 0.2);
 }
-.sensor-card.co .sensor-icon {
+.sensor-card.co2 .sensor-icon {
   background: rgba(102, 126, 234, 0.2);
 }
 .sensor-card.air_quality .sensor-icon {
@@ -381,7 +381,7 @@ tr:hover td {
   background: rgba(79, 172, 254, 0.2);
   color: #4facfe;
 }
-.badge-co {
+.badge-co2 {
   background: rgba(102, 126, 234, 0.2);
   color: #667eea;
 }

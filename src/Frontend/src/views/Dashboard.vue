@@ -52,121 +52,129 @@
 </template>
 
 <script>
-import { ref, computed, onMounted, onUnmounted } from "vue";
-import * as signalR from "@microsoft/signalr";
-import axios from "axios";
+import { ref, computed, onMounted, onUnmounted } from "vue"
+import * as signalR from "@microsoft/signalr"
+import axios from "axios"
 
 export default {
   name: "Dashboard",
   setup() {
-    const sensors = ref([]);
-    const loading = ref(true);
-    let connection = null;
+    const sensors = ref([])
+    const loading = ref(true)
+    let connection = null
 
-    const API_URL = import.meta.env.PROD ? "" : "http://localhost:5000";
+    const API_URL = import.meta.env.PROD ? "" : "http://localhost:5000"
 
     // Define sort order for sensor types
-    const typeOrder = { TEMP: 1, HUMIDITY: 2, CO: 3, AIR_QUALITY: 4 };
+    const typeOrder = { TEMP: 1, HUMIDITY: 2, CO2: 3, AIR_QUALITY: 4 }
     const locationOrder = {
-      Salon: 1,
-      Sypialnia: 2,
-      Kuchnia: 3,
-      Łazienka: 4,
-      Garaż: 5,
-      Piwnica: 6,
-      Korytarz: 7,
-      Zewnątrz: 8,
-    };
+      "Serwerownia 1": 1,
+      "Serwerownia 2": 2,
+      "Serwerownia 3": 3,
+      "Serwerownia 4": 4,
+      "Chłodzenie 1": 5,
+      "Chłodzenie 2": 6,
+      "Chłodzenie 3": 7,
+      "Chłodzenie 4": 8,
+      "UPS 1": 9,
+      "UPS 2": 10,
+      "UPS 3": 11,
+      "UPS 4": 12,
+      "Filtr powietrza 1": 13,
+      "Filtr powietrza 2": 14,
+      "Filtr powietrza 3": 15,
+      "Filtr powietrza 4": 16,
+    }
 
     // Computed property to sort sensors
     const sortedSensors = computed(() => {
       return [...sensors.value].sort((a, b) => {
         // First sort by type
-        const typeA = typeOrder[a.sensorType] || 99;
-        const typeB = typeOrder[b.sensorType] || 99;
-        if (typeA !== typeB) return typeA - typeB;
+        const typeA = typeOrder[a.sensorType] || 99
+        const typeB = typeOrder[b.sensorType] || 99
+        if (typeA !== typeB) return typeA - typeB
         // Then sort by location
-        const locA = locationOrder[a.location] || 99;
-        const locB = locationOrder[b.location] || 99;
-        return locA - locB;
-      });
-    });
+        const locA = locationOrder[a.location] || 99
+        const locB = locationOrder[b.location] || 99
+        return locA - locB
+      })
+    })
 
     const fetchDashboard = async () => {
       try {
-        const response = await axios.get(`${API_URL}/api/sensors/dashboard`);
-        sensors.value = response.data;
+        const response = await axios.get(`${API_URL}/api/sensors/dashboard`)
+        sensors.value = response.data
       } catch (error) {
-        console.error("Error fetching dashboard:", error);
+        console.error("Error fetching dashboard:", error)
       } finally {
-        loading.value = false;
+        loading.value = false
       }
-    };
+    }
 
     const setupSignalR = async () => {
       connection = new signalR.HubConnectionBuilder()
         .withUrl(`${API_URL}/sensorhub`)
         .withAutomaticReconnect()
-        .build();
+        .build()
 
       connection.on("NewReading", (reading) => {
         const index = sensors.value.findIndex(
           (s) => s.sensorId === reading.sensorId
-        );
+        )
         if (index !== -1) {
-          sensors.value[index].lastValue = reading.value;
-          sensors.value[index].lastTimestamp = reading.timestamp;
-          const current = sensors.value[index];
+          sensors.value[index].lastValue = reading.value
+          sensors.value[index].lastTimestamp = reading.timestamp
+          const current = sensors.value[index]
           current.averageValue =
-            (current.averageValue * 99 + reading.value) / 100;
+            (current.averageValue * 99 + reading.value) / 100
         } else {
-          fetchDashboard();
+          fetchDashboard()
         }
-      });
+      })
 
       try {
-        await connection.start();
-        console.log("SignalR connected");
+        await connection.start()
+        console.log("SignalR connected")
       } catch (error) {
-        console.error("SignalR connection error:", error);
+        console.error("SignalR connection error:", error)
       }
-    };
+    }
 
     const getIcon = (type) => {
-      const icons = { TEMP: "🌡️", HUMIDITY: "💧", CO: "☁️", AIR_QUALITY: "🌿" };
-      return icons[type] || "📡";
-    };
+      const icons = { TEMP: "🌡️", HUMIDITY: "💧", CO2: "☁️", AIR_QUALITY: "🌿" }
+      return icons[type] || "📡"
+    }
 
     const getSensorName = (type) => {
       const names = {
         TEMP: "Temperatura",
         HUMIDITY: "Wilgotność",
-        CO: "Tlenek węgla",
+        CO2: "Dwutlenek węgla",
         AIR_QUALITY: "Jakość powietrza PM2.5",
-      };
-      return names[type] || type;
-    };
+      }
+      return names[type] || type
+    }
 
     const formatValue = (value) => {
-      if (value === null || value === undefined) return "-";
-      return value.toFixed(1);
-    };
+      if (value === null || value === undefined) return "-"
+      return value.toFixed(1)
+    }
 
     const formatTime = (timestamp) => {
-      if (!timestamp) return "-";
-      return new Date(timestamp).toLocaleTimeString("pl-PL");
-    };
+      if (!timestamp) return "-"
+      return new Date(timestamp).toLocaleTimeString("pl-PL")
+    }
 
     onMounted(async () => {
-      await fetchDashboard();
-      await setupSignalR();
-    });
+      await fetchDashboard()
+      await setupSignalR()
+    })
 
     onUnmounted(() => {
       if (connection) {
-        connection.stop();
+        connection.stop()
       }
-    });
+    })
 
     return {
       sensors,
@@ -176,7 +184,7 @@ export default {
       getSensorName,
       formatValue,
       formatTime,
-    };
+    }
   },
-};
+}
 </script>
