@@ -176,7 +176,5 @@
       "volatility": 2.8,
       "intervalMs": null
     }
-  ],
-  "singleSensor": "TEMP-SERVER-ROOM-1"
+  ]
 }
-

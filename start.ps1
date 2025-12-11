@@ -5,7 +5,7 @@ Write-Host ""
 
 # Step 1: Start containers
 Write-Host "[1/5] Starting Docker containers..." -ForegroundColor Yellow
-docker-compose up -d
+docker-compose up -d --build
 
 if ($LASTEXITCODE -ne 0) {
     Write-Host "[ERROR] Failed to start containers!" -ForegroundColor Red
