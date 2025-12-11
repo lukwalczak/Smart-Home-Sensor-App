@@ -3,7 +3,6 @@
 echo "Installing dependencies..."
 cd /blockchain || exit 1
 
-# Check if node_modules exists
 if [ ! -d "node_modules" ]; then
     echo "Running npm install..."
     npm install || exit 1

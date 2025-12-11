@@ -159,7 +159,6 @@ export default {
       try {
         const response = await axios.get(`${API_URL}/api/sensors/types`)
         sensorTypes.value = response.data
-        // Fetch charts for each type
         for (const type of response.data) {
           await fetchTypeChart(type)
         }

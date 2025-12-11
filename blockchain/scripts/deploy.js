@@ -9,7 +9,6 @@ async function deploy() {
     console.log('RPC URL:', rpcUrl);
     console.log('');
 
-    // Connect to Anvil
     const provider = new ethers.JsonRpcProvider(rpcUrl);
     const wallet = new ethers.Wallet(process.env.ADMIN_PRIVATE_KEY, provider);
 
@@ -17,11 +16,9 @@ async function deploy() {
     const balance = await provider.getBalance(wallet.address);
     console.log('Admin balance:', ethers.formatEther(balance), 'ETH\n');
 
-    // Load compiled contract (pre-compiled version)
     const contractPath = path.join(__dirname, '../contract-compiled.json');
     const contractJson = JSON.parse(fs.readFileSync(contractPath, 'utf8'));
 
-    // Deploy contract
     const factory = new ethers.ContractFactory(
         contractJson.abi,
         '0x' + contractJson.bytecode,
@@ -35,7 +32,6 @@ async function deploy() {
     console.log(`- Initial Supply: ${initialSupply} SRT`);
     console.log(`- Reward per Message: ${rewardPerMessage} SRT\n`);
 
-    // Convert to wei (18 decimals)
     const initialSupplyWei = ethers.parseUnits(initialSupply, 18);
     const rewardPerMessageWei = ethers.parseUnits(rewardPerMessage, 18);
 
@@ -45,7 +41,6 @@ async function deploy() {
     const contractAddress = await contract.getAddress();
     console.log('✅ Contract deployed at:', contractAddress);
 
-    // Save deployment info
     const deploymentInfo = {
         contractAddress,
         adminAddress: wallet.address,
@@ -60,7 +55,6 @@ async function deploy() {
     fs.writeFileSync(deploymentPath, JSON.stringify(deploymentInfo, null, 2));
     console.log('📄 Deployment info saved to deployment.json\n');
 
-    // Verify deployment
     const totalSupply = await contract.totalSupply();
     const ownerBalance = await contract.balanceOf(wallet.address);
     console.log('Contract verification:');

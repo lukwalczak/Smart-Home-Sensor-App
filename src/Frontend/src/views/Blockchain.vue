@@ -5,7 +5,6 @@
       <p>System nagradzania tokenami ERC-20 za przesyłane komunikaty</p>
     </header>
 
-    <!-- Contract Info -->
     <div v-if="contractInfo" class="contract-info">
       <h2>📜 Informacje o Smart Contract</h2>
       <div class="info-grid">
@@ -38,19 +37,16 @@
       </div>
     </div>
 
-    <!-- Loading State -->
     <div v-if="loading" class="loading">
       <div class="spinner"></div>
       <p>Ładowanie danych z blockchainu...</p>
     </div>
 
-    <!-- Empty State -->
     <div v-else-if="sensors.length === 0" class="empty-state">
       <p>⚠️ Blockchain nie jest jeszcze zainicjalizowany</p>
       <p>Upewnij się, że kontrakt został wdrożony na Anvil</p>
     </div>
 
-    <!-- Sensors Table -->
     <div v-else class="blockchain-table-wrapper">
       <div class="table-header">
         <h2>💰 Portfele sensorów</h2>
@@ -68,7 +64,6 @@
             <th>Lokalizacja</th>
             <th>Adres portfela</th>
             <th>Saldo (SRT)</th>
-            <th>Łączne nagrody (SRT)</th>
             <th>Liczba wiadomości</th>
           </tr>
         </thead>
@@ -88,13 +83,11 @@
             <td>{{ getLocation(sensor.sensorId) }}</td>
             <td class="mono">{{ formatAddress(sensor.walletAddress) }}</td>
             <td class="number">{{ formatNumber(sensor.balance) }}</td>
-            <td class="number">{{ formatNumber(sensor.totalRewards) }}</td>
             <td class="number">{{ sensor.messageCount }}</td>
           </tr>
         </tbody>
       </table>
 
-      <!-- Summary Stats -->
       <div class="summary-stats">
         <div class="stat-card">
           <div class="stat-label">Łączne nagrody wypłacone</div>
@@ -265,7 +258,6 @@ export default {
 
     onMounted(() => {
       fetchData()
-      // Auto refresh every 30 seconds
       setInterval(fetchData, 30000)
     })
 

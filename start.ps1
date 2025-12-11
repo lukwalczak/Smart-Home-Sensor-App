@@ -1,9 +1,6 @@
-# Quick start script for Data Center Sensor App with Blockchain
-
 Write-Host "[*] Starting Data Center Sensor App with Blockchain..." -ForegroundColor Cyan
 Write-Host ""
 
-# Step 1: Start containers
 Write-Host "[1/5] Starting Docker containers..." -ForegroundColor Yellow
 docker-compose up -d --build
 
@@ -12,7 +9,6 @@ if ($LASTEXITCODE -ne 0) {
     exit 1
 }
 
-# Step 2: Wait for services
 Write-Host "[2/5] Waiting for services to initialize (30 seconds)..." -ForegroundColor Yellow
 for ($i = 30; $i -gt 0; $i--) {
     Write-Host "   $i seconds remaining..." -NoNewline
@@ -21,7 +17,6 @@ for ($i = 30; $i -gt 0; $i--) {
 }
 Write-Host "   Done!                    "
 
-# Step 3: Deploy smart contract
 Write-Host "[3/5] Deploying smart contract to Anvil..." -ForegroundColor Yellow
 $deployResult = docker exec blockchain sh /blockchain/scripts/setup.sh 2>&1
 
@@ -43,19 +38,16 @@ if ($LASTEXITCODE -eq 0) {
     exit 1
 }
 
-# Step 4: Show deployment info
 Write-Host "[4/5] Contract deployment info:" -ForegroundColor Yellow
 $deploymentInfo = docker exec blockchain cat /blockchain/deployment.json | ConvertFrom-Json
 Write-Host "   Contract Address: $($deploymentInfo.contractAddress)" -ForegroundColor Cyan
 Write-Host "   Admin Address: $($deploymentInfo.adminAddress)" -ForegroundColor Cyan
 Write-Host "   Deployed At: $($deploymentInfo.deployedAt)" -ForegroundColor Cyan
 
-# Step 5: Restart backend
 Write-Host "[5/5] Restarting backend to load contract..." -ForegroundColor Yellow
 docker restart backend | Out-Null
 Start-Sleep -Seconds 5
 
-# Final check
 Write-Host ""
 Write-Host "[OK] Setup complete! Checking services..." -ForegroundColor Green
 Write-Host ""
@@ -76,7 +68,6 @@ Write-Host "   Backend API:          http://localhost:5000/api" -ForegroundColor
 Write-Host "   Anvil RPC:            http://localhost:8545" -ForegroundColor White
 Write-Host ""
 
-# Test API
 Write-Host "Testing API..." -ForegroundColor Yellow
 try {
     $contractInfo = Invoke-RestMethod -Uri "http://localhost:5000/api/blockchain/contract" -ErrorAction Stop

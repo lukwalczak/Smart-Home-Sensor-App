@@ -22,14 +22,13 @@ public class BlockchainService
         _logger = logger;
 
         var rpcUrl = config["Blockchain:RpcUrl"] ?? "http://localhost:8545";
-        var privateKey = config["Blockchain:AdminPrivateKey"] 
+        var privateKey = config["Blockchain:AdminPrivateKey"]
             ?? "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80";
         var chainId = config.GetValue<int>("Blockchain:ChainId", 31337);
 
         _adminAccount = new Account(privateKey, chainId);
         _web3 = new Web3(_adminAccount, rpcUrl);
 
-        // Contract address will be loaded from deployment file
         _contractAddress = config["Blockchain:ContractAddress"] ?? string.Empty;
 
         if (!string.IsNullOrEmpty(_contractAddress))
@@ -51,7 +50,6 @@ public class BlockchainService
 
         try
         {
-            // Try to load contract address from deployment file
             var deploymentPath = "/blockchain/deployment.json";
             if (File.Exists(deploymentPath))
             {
@@ -102,7 +100,7 @@ public class BlockchainService
             }
 
             var rewardFunction = _contract.GetFunction("rewardSensor");
-            
+
             var gas = await rewardFunction.EstimateGasAsync(
                 _adminAccount.Address,
                 null,
@@ -114,8 +112,8 @@ public class BlockchainService
             var receipt = await rewardFunction.SendTransactionAndWaitForReceiptAsync(
                 _adminAccount.Address,
                 gas,
-                new HexBigInteger(0), // value
-                null, // gas price (null = use default)
+                new HexBigInteger(0),
+                null,
                 walletAddress,
                 sensorId
             );
@@ -172,7 +170,7 @@ public class BlockchainService
             return new List<SensorTokenInfo>();
 
         var results = new List<SensorTokenInfo>();
-        
+
         foreach (var (sensorId, _) in SensorWalletConfig.SensorWallets)
         {
             var info = await GetSensorTokenInfoAsync(sensorId);
@@ -216,7 +214,6 @@ public class BlockchainService
 
     private string GetContractAbi()
     {
-        // Full ABI for SensorRewardToken contract
         return @"[
             {""inputs"":[{""internalType"":""uint256"",""name"":""initialSupply"",""type"":""uint256""},{""internalType"":""uint256"",""name"":""_rewardPerMessage"",""type"":""uint256""}],""stateMutability"":""nonpayable"",""type"":""constructor""},
             {""inputs"":[{""internalType"":""address"",""name"":""spender"",""type"":""address""},{""internalType"":""uint256"",""name"":""allowance"",""type"":""uint256""},{""internalType"":""uint256"",""name"":""needed"",""type"":""uint256""}],""name"":""ERC20InsufficientAllowance"",""type"":""error""},

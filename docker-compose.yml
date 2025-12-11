@@ -1,5 +1,4 @@
 services:
-  # Anvil - Local Ethereum node
   anvil:
     image: ghcr.io/foundry-rs/foundry:nightly-5b7e4cb3c882b28f3c32ba580de27ce7381f415a
     container_name: anvil
@@ -14,7 +13,6 @@ services:
       ]
     restart: unless-stopped
 
-  # Blockchain - Contract deployment
   blockchain:
     image: node:20-alpine
     container_name: blockchain
@@ -31,7 +29,6 @@ services:
     command: sh -c "npm install && tail -f /dev/null"
     restart: unless-stopped
 
-  # Eclipse Mosquitto MQTT Broker
   mosquitto:
     image: eclipse-mosquitto:2
     container_name: mosquitto
@@ -44,7 +41,6 @@ services:
       - mosquitto_log:/mosquitto/log
     restart: unless-stopped
 
-  # MongoDB Database
   mongodb:
     image: mongo:7
     container_name: mongodb
@@ -54,7 +50,6 @@ services:
       - mongodb_data:/data/db
     restart: unless-stopped
 
-  # ASP.NET Core Backend
   backend:
     build:
       context: ./src/Backend
@@ -81,7 +76,6 @@ services:
       - blockchain
     restart: unless-stopped
 
-  # Vue.js Frontend
   frontend:
     build:
       context: ./src/Frontend
@@ -93,7 +87,6 @@ services:
       - backend
     restart: unless-stopped
 
-  # Sensor Simulator
   simulator:
     build:
       context: ./src/Simulator

@@ -1,4 +1,3 @@
-# send-sensor-value.ps1
 param(
     [Parameter(Mandatory=$true)]
     [string]$SensorId,
@@ -7,7 +6,6 @@ param(
     [double]$Value
 )
 
-# Mapowanie sensorów (z sensors-config.json)
 $sensorMap = @{
     "TEMP-SERVER-ROOM-1" = @{Type="TEMP"; Location="Serwerownia 1"; Unit="°C"}
     "TEMP-SERVER-ROOM-2" = @{Type="TEMP"; Location="Serwerownia 2"; Unit="°C"}

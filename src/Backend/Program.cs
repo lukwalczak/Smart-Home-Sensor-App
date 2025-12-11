@@ -4,22 +4,17 @@ using Backend.Blockchain;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSignalR();
 
-// MongoDB
 builder.Services.AddSingleton<MongoDbService>();
 
-// Blockchain
 builder.Services.AddSingleton<BlockchainService>();
 
-// MQTT Background Service
 builder.Services.AddSingleton<MqttService>();
 builder.Services.AddHostedService(provider => provider.GetRequiredService<MqttService>());
 
-// CORS for Vue.js frontend
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
@@ -33,7 +28,6 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-// Initialize blockchain service after a delay to allow contract deployment
 var blockchainService = app.Services.GetRequiredService<BlockchainService>();
 var logger = app.Services.GetRequiredService<ILogger<Program>>();
 

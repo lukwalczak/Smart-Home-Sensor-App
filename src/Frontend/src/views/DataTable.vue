@@ -14,7 +14,7 @@
     </header>
 
     <div class="data-table-wrapper">
-      
+
       <div class="table-header">
         <div class="filters">
           <input
@@ -39,8 +39,8 @@
               {{ getSensorName(type) }}
             </option>
           </select>
-          <select 
-            v-model="filters.sensorId" 
+          <select
+            v-model="filters.sensorId"
             class="filter-select"
             :disabled="!filters.sensorType && sensorIds.length === 0"
           >
@@ -271,7 +271,6 @@ export default {
           : `${API_URL}/api/sensors/ids`
         const response = await axios.get(url)
         sensorIds.value = response.data
-        // Reset sensorId if it's no longer in the list
         if (filters.sensorId && !sensorIds.value.includes(filters.sensorId)) {
           filters.sensorId = ""
         }

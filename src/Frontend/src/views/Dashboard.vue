@@ -73,7 +73,6 @@ export default {
 
     const API_URL = import.meta.env.PROD ? "" : "http://localhost:5000"
 
-    // Define sort order for sensor types
     const typeOrder = { TEMP: 1, HUMIDITY: 2, CO2: 3, AIR_QUALITY: 4 }
     const locationOrder = {
       "Serwerownia 1": 1,
@@ -94,14 +93,11 @@ export default {
       "Filtr powietrza 4": 16,
     }
 
-    // Computed property to sort sensors
     const sortedSensors = computed(() => {
       return [...sensors.value].sort((a, b) => {
-        // First sort by type
         const typeA = typeOrder[a.sensorType] || 99
         const typeB = typeOrder[b.sensorType] || 99
         if (typeA !== typeB) return typeA - typeB
-        // Then sort by location
         const locA = locationOrder[a.location] || 99
         const locB = locationOrder[b.location] || 99
         return locA - locB

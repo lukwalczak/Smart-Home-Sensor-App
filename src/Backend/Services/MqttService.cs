@@ -99,7 +99,6 @@ public class MqttService : BackgroundService
 
             await _mongoDb.InsertReadingAsync(reading);
 
-            // Reward sensor with blockchain tokens
             _ = Task.Run(async () =>
             {
                 try
@@ -112,7 +111,6 @@ public class MqttService : BackgroundService
                 }
             });
 
-            // Notify connected clients via SignalR
             await _hubContext.Clients.All.SendAsync("NewReading", new
             {
                 reading.SensorType,

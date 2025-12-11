@@ -19,7 +19,6 @@ public class MongoDbService
         var database = client.GetDatabase(databaseName);
         _readings = database.GetCollection<SensorReading>("sensor_readings");
 
-        // Create indexes
         var indexKeys = Builders<SensorReading>.IndexKeys
             .Descending(r => r.Timestamp)
             .Ascending(r => r.SensorType)

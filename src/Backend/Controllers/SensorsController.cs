@@ -21,9 +21,6 @@ public class SensorsController : ControllerBase
         _logger = logger;
     }
 
-    /// <summary>
-    /// Get sensor readings with filtering, sorting, and pagination
-    /// </summary>
     [HttpGet]
     public async Task<ActionResult<PaginatedResult<SensorReadingDto>>> GetReadings(
         [FromQuery] DateTime? dateFrom,
@@ -59,9 +56,6 @@ public class SensorsController : ControllerBase
         return Ok(dto);
     }
 
-    /// <summary>
-    /// Get dashboard data (last value and average for each sensor)
-    /// </summary>
     [HttpGet("dashboard")]
     public async Task<ActionResult<List<DashboardSensor>>> GetDashboard()
     {
@@ -69,9 +63,6 @@ public class SensorsController : ControllerBase
         return Ok(data);
     }
 
-    /// <summary>
-    /// Get list of sensor types
-    /// </summary>
     [HttpGet("types")]
     public async Task<ActionResult<List<string>>> GetSensorTypes()
     {
@@ -79,9 +70,6 @@ public class SensorsController : ControllerBase
         return Ok(types);
     }
 
-    /// <summary>
-    /// Get list of sensor IDs (optionally filtered by type)
-    /// </summary>
     [HttpGet("ids")]
     public async Task<ActionResult<List<string>>> GetSensorIds([FromQuery] string? sensorType)
     {
@@ -89,9 +77,6 @@ public class SensorsController : ControllerBase
         return Ok(ids);
     }
 
-    /// <summary>
-    /// Export filtered data as CSV
-    /// </summary>
     [HttpGet("export/csv")]
     public async Task<IActionResult> ExportCsv(
         [FromQuery] DateTime? dateFrom,
@@ -117,7 +102,7 @@ public class SensorsController : ControllerBase
         using var memoryStream = new MemoryStream();
         using var writer = new StreamWriter(memoryStream, Encoding.UTF8);
         using var csv = new CsvWriter(writer, new CsvConfiguration(CultureInfo.InvariantCulture));
-        
+
         csv.WriteRecords(records);
         await writer.FlushAsync();
 
@@ -125,9 +110,6 @@ public class SensorsController : ControllerBase
         return File(bytes, "text/csv", $"sensors_{DateTime.Now:yyyyMMdd_HHmmss}.csv");
     }
 
-    /// <summary>
-    /// Export filtered data as JSON
-    /// </summary>
     [HttpGet("export/json")]
     public async Task<IActionResult> ExportJson(
         [FromQuery] DateTime? dateFrom,

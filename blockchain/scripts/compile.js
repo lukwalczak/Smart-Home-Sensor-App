@@ -3,7 +3,6 @@ const fs = require('fs');
 const path = require('path');
 
 function findImports(importPath) {
-    // Handle OpenZeppelin imports
     if (importPath.startsWith('@openzeppelin/')) {
         const contractPath = path.join(__dirname, '../node_modules', importPath);
         try {
@@ -17,11 +16,9 @@ function findImports(importPath) {
 
 console.log("📦 Compiling SensorRewardToken.sol...");
 
-// Read contract source
 const contractPath = path.join(__dirname, '../contracts/SensorRewardToken.sol');
 const source = fs.readFileSync(contractPath, 'utf8');
 
-// Prepare input for compiler
 const input = {
     language: 'Solidity',
     sources: {
@@ -42,10 +39,8 @@ const input = {
     }
 };
 
-// Compile
 const output = JSON.parse(solc.compile(JSON.stringify(input), { import: findImports }));
 
-// Check for errors
 if (output.errors) {
     const errors = output.errors.filter(e => e.severity === 'error');
     if (errors.length > 0) {
@@ -55,10 +50,8 @@ if (output.errors) {
     }
 }
 
-// Extract compiled contract
 const contract = output.contracts['SensorRewardToken.sol']['SensorRewardToken'];
 
-// Save to contract-compiled.json
 const compiled = {
     abi: contract.abi,
     bytecode: contract.evm.bytecode.object
